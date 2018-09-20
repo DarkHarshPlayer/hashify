@@ -5,8 +5,11 @@
 
 
 __Warning The Songs Are Not Included With The Source__
-  If You Want Song to Be played, put your song in:
-'''
+
+If You Want Song to Be played, put your song in:
+
+```
 ../assests/Songs/ArtistName/AlbumName/SongName.extension
-'''
+```
+
 and enter the data of your song, artist and album in the database .
