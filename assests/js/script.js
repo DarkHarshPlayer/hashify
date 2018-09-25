@@ -66,7 +66,7 @@ function  openPage(url) {
     var encodedUrl = encodeURI(url + "&userLoggedIn="+userLoggedIn);
     $("#mainContent").load(encodedUrl);
     history.pushState(null,null,url);
-   // $("#mainViewContainer").scrollTop(0);
+    $("#mainViewContainer").scrollTop(0);
 }
 
 function addSongsToDataBase(songtitle,songartist,songalbum,songgenre,songduration,songpath,songalbumOrder) {
@@ -176,6 +176,31 @@ function logOut() {
        location.reload();
     });
 }
+
+function showOptionsMenuCM(event,elem) {
+    var songId = $(elem).find(".songIdCM").val();
+
+    //console.log("X: "+event.x+" Y:"+event.y);
+
+    //console.log(button);
+     menu = $(".optionMenu");
+     var menuWidth = menu.width();
+
+     menu.find('.songId').val(songId);
+
+     var scrollTop = $(window).scrollTop();
+     var elementOffset = event.y;
+
+    var top = elementOffset-scrollTop;
+     var left = event.x;
+
+    menu.css({"top": top +"px" , "left" : left + "px" , "display": "block"});
+
+    // // console.log(menu.offset().top);
+
+}
+
+
 function showOptionsMenu(button) {
     var songId = $(button).prevAll(".songId").val();
 

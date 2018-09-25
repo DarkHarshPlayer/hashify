@@ -352,6 +352,7 @@ body{
     font-size: 16px;
     font-weight: 600;
     letter-spacing: 2px;
+    cursor: pointer;
 }.trackList li.trackListRow .trackInfo{
      padding: 0 10px;
  }
@@ -363,7 +364,23 @@ body{
        color: #636060;
        font-size: 12px;
        line-height: 35px;
+  }.trackList li.trackListRow .trackInfo .albumName{
+       color: #636060;
+       font-size: 12px;
+       line-height: 35px;
   }
+.trackList li.trackListRow .trackInfo span[role = "link"] .albumName:hover {
+    text-decoration: underline;
+}.trackList li.trackListRow .trackInfo span[role = "link"] .artistName:hover {
+    text-decoration: underline;
+}
+
+
+.trackList li.trackListRow .trackInfo .artistAlbumNameSeperator{
+    color: #636060;
+
+}
+
 .entityInfoArtist {
     position: relative;
     padding: 125px 0 70px 0;
@@ -388,7 +405,7 @@ body{
       border: 2px solid #fff;
       border-radius: 200px;
       padding: 15px;
-      min-width: 130px;
+      min-width: 120px;
       outline: none;
   }
   .button.green{
@@ -446,7 +463,7 @@ body{
     background-color: transparent;
     border: none;
     outline: none;
-    color: #1edb57;
+    caret-color: #1edb57;
     font-weight: 700;
     font-size: 62px;
     letter-spacing: 2px;
@@ -465,6 +482,7 @@ body{
     font-size: 25px;
     text-align: center;
 }
+
 
 .gridViewContainer .buttonItem .button{
     display: block;
@@ -512,6 +530,7 @@ body{
     color: rgba(147,147,147,0.8);
     height: 40px;
     cursor: pointer;
+    z-index: 300;
 }
 
 .optionMenu .item:hover{
