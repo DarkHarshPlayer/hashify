@@ -15,4 +15,8 @@ Put the Album art in (JPG 600 × 600 recommended):
 ```
 ../assests/Images/Album Art/albumName.jpg
 ```
+Put the Artist Image in (JPG 1500 × 500 recommended):
+```
+../assests/Images/artist/artist.jpg
+```
 and enter the data of your song, artist and album in the database .
