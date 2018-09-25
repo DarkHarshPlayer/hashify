@@ -13,9 +13,10 @@ if (isset($_SESSION["userLoggedIn"])){
     if ($userName == 'admin'){
         echo "<script>
                 userLoggedIn = '$userName';
-                       document.addEventListener('contextmenu', function() {
-                      console.log(userLoggedIn+' Permission Granted');
-                    });
+                     document.addEventListener('contextmenu', event => event.preventDefault());
+                //   document.addEventListener('contextmenu', function() {
+                    //  console.log(userLoggedIn+' Permission Granted');
+                    //});
  
                      
         </script>";
