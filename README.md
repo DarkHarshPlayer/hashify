@@ -1,7 +1,7 @@
 # Hashify
 ## A simple music streaming Web-App
 
-#### A simple music streaming site created Using PHP , Javascript (Jquery, AJAX) , HTML , CSS. Dtabase Used - MySql.
+#### A simple music streaming site created Using PHP , Javascript (Jquery, AJAX) , HTML , CSS. Database Used - MySql.
 
 
 __Warning The Songs Are Not Included With The Source__
