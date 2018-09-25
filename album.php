@@ -19,6 +19,9 @@ $artistId = $artist->getId();
         <h1><?php echo $album->getTitle();?></h1>
         <span role="link" onclick="openPage('artist.php?id=<?php echo $artistId?>')">By <span><?php echo $artist->getName();?></span></span><br><br>
         <span> <?php echo $album->getNoOfSongs();?> Songs</span>
+        <br><br>
+        <button class="button "style="background-color: #25a04a !important;
+    border-color: #25a04a !important;" onclick="playFirstTrack()">Play</button>
     </div>
     <div class="rightSection">
         <div class="trackListContainer">
@@ -30,24 +33,27 @@ $artistId = $artist->getId();
 
                         $albumSong = new Songs($con,$songId);
                         $albumArtist = $albumSong->getArtist();
-
+                        $currentSongAlbum = $albumSong->getAlbum();
                         echo "
-                            <li class='trackListRow' >  
+                            <li class='trackListRow' oncontextmenu='showOptionsMenuCM(event,this)'>
+                                <input type='hidden' class='songIdCM' value='".$albumSong->getId()."'>
                                 <div class='trackCount'>
                                 <img onclick='manualPlaylist=false;setTrack(\"".$albumSong->getId()."\",tempPlaylist,true)' src='assests/Images/icons/play-white.png' class='play' alt=''>
                                 <span class='trackNumber'>$i</span>
                                 </div>
-                                <div class='trackInfo' onclick='manualPlaylist=false;setTrack(\"".$albumSong->getId()."\",tempPlaylist,true)'>
-                                <span class='trackName'>".$albumSong->getTitle()."</span><br>
-                                <span class='artistName'>".$albumArtist->getName()."</span>
+                                <div class='trackInfo' >
+                                <span class='trackName ' onclick='manualPlaylist=false;setTrack(\"".$albumSong->getId()."\",tempPlaylist,true)'>".$albumSong->getTitle()."</span><br>
+                                 <span role=\"link\" onclick=\"openPage('artist.php?id=".$albumArtist->getId()."')\"><span class='artistName'>".$albumArtist->getName()."</span></span>  
+                                <span class='artistAlbumNameSeperator'>•</span>
+                                <span class='albumName'> ".$currentSongAlbum->getTitle()."</span>
                                 </div>
                                 <div class='trackOptions'>
-                                    <input type='hidden' class='songId' value='".$albumSong->getId()."'> 
-                                    <img src='assests/Images/icons/more.png' onclick='showOptionsMenu(this)'  class='optionButton' alt=''>
+                                <input type='hidden' class='songId' value='".$albumSong->getId()."'> 
+                                <img src='assests/Images/icons/more.png' onclick='showOptionsMenu(this)'  class='optionButton' alt=''>
                                 </div>
                                 <div class='trackDuration'>
                                 <span class='duration'>".$albumSong->getDuration()."</span>
-</div>
+                                </div>
                             </li>
                         ";
                         $i++;

@@ -16,8 +16,9 @@ $owner  = new User($con,$playlist->getOwner());
         <img src="assests/Images/icons/playlist.png" class="playListImage">
         <h1><?php echo $playlist->getName();?></h1>
         <span>By <?php echo $owner->getUserName();?></span><br><br>
-        <span> <?php echo $playlist->getNoOfSongs();?> Songs</span><br><br>
-        <button class="button" onclick="deletePlaylist(<?php echo $playlistId?>)">Delete Playlist</button>
+        <span> <?php echo $playlist->getNoOfSongs();?> Songs</span><br><br><button style="background-color: #25a04a !important;
+    border-color: #25a04a !important;" class="button" onclick="playFirstTrack()">Play</button>
+        <button class="button" style="width: 200px;" onclick="deletePlaylist(<?php echo $playlistId?>)">Delete Playlist</button>
     </div>
     <div class="rightSection">
         <div class="trackListContainer">
@@ -29,6 +30,7 @@ $owner  = new User($con,$playlist->getOwner());
 
                     $playlistSong = new Songs($con,$songId);
                     $songArtist = $playlistSong->getArtist();
+                    $currentSongAlbum = $playlistSong->getAlbum();
 
                     echo "
                             <li class='trackListRow' >  
@@ -36,9 +38,11 @@ $owner  = new User($con,$playlist->getOwner());
                                 <img onclick='manualPlaylist=false;setTrack(\"".$playlistSong->getId()."\",tempPlaylist,true)' src='assests/Images/icons/play-white.png' class='play' alt=''>
                                 <span class='trackNumber'>$i</span>
                                 </div>
-                                <div class='trackInfo' onclick='manualPlaylist=false;setTrack(\"".$playlistSong->getId()."\",tempPlaylist,true)'>
-                                <span class='trackName'>".$playlistSong->getTitle()."</span><br>
-                                <span class='artistName'>".$songArtist->getName()."</span>
+                                <div class='trackInfo' >
+                                <span class='trackName ' onclick='manualPlaylist=false;setTrack(\"".$playlistSong->getId()."\",tempPlaylist,true)'>".$playlistSong->getTitle()."</span><br>
+                                 <span role=\"link\" onclick=\"openPage('artist.php?id=".$songArtist->getId()."')\"><span class='artistName'>".$songArtist->getName()."</span></span>
+                               <span class='artistAlbumNameSeperator'>•</span>
+                                <span role=\"link\" onclick=\"openPage('album.php?id=".$currentSongAlbum->getAlbumId()."')\"> <span class='albumName'> ".$currentSongAlbum->getTitle()."</span></span>
                                 </div>
                                 <div class='trackOptions'>
                                     <input type='hidden' class='songId' value='".$playlistSong->getId()."'>

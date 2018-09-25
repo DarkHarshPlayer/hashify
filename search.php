@@ -60,24 +60,27 @@
             array_push($songIdArray,$row['id']);
             $albumSong = new Songs($con,$row['id']);
             $albumArtist = $albumSong->getArtist();
+            $currentSongAlbum = $albumSong->getAlbum();
 
             echo "
-                            <li class='trackListRow' >  
+                             <li class='trackListRow' oncontextmenu='showOptionsMenuCM(event,this)'>
+                                <input type='hidden' class='songIdCM' value='".$albumSong->getId()."'>
                                 <div class='trackCount'>
                                 <img onclick='manualPlaylist=false;setTrack(\"".$albumSong->getId()."\",tempPlaylist,true)' src='assests/Images/icons/play-white.png' class='play' alt=''>
                                 <span class='trackNumber'>$i</span>
                                 </div>
-                                <div class='trackInfo' onclick='manualPlaylist=false;setTrack(\"".$albumSong->getId()."\",tempPlaylist,true)'>
-                                <span class='trackName'>".$albumSong->getTitle()."</span><br>
-                                <span class='artistName'>".$albumArtist->getName()."</span>
-                                </div>
+                               <div class='trackInfo' >
+                                <span class='trackName ' onclick='manualPlaylist=false;setTrack(\"".$albumSong->getId()."\",tempPlaylist,true)'>".$albumSong->getTitle()."</span><br>
+                                 <span role=\"link\" onclick=\"openPage('artist.php?id=".$albumArtist->getId()."')\"><span class='artistName'>".$albumArtist->getName()."</span></span>
+                                  <span class='artistAlbumNameSeperator'>•</span>
+                                <span role=\"link\" onclick=\"openPage('album.php?id=".$currentSongAlbum->getAlbumId()."')\"> <span class='albumName'> ".$currentSongAlbum->getTitle()."</span></span>      </div>
                                 <div class='trackOptions'>
                                 <input type='hidden' class='songId' value='".$albumSong->getId()."'>
                                     <img src='assests/Images/icons/more.png' onclick='showOptionsMenu(this)'  class='optionButton' alt=''>
                                 </div>
                                 <div class='trackDuration'>
                                 <span class='duration'>".$albumSong->getDuration()."</span>
-</div>
+                            </div>
                             </li>
                         ";
             $i++;

@@ -20,7 +20,7 @@ $artist = new Artist($con, $artistId);
             <h1 class="artistName"><?php echo $artist->getName()?></h1>
 
             <div class="headerButtons">
-                <button class="button green" onclick="playFirstTrack()">Play</button>
+                <button  class="button green" onclick="playFirstTrack()">Play</button>
             </div>
         </div>
     </div>
@@ -39,16 +39,20 @@ $artist = new Artist($con, $artistId);
                 }
             $albumSong = new Songs($con,$songId);
             $albumArtist = $albumSong->getArtist();
+            $currentSongAlbum = $albumSong->getAlbum();
 
             echo "
-                            <li class='trackListRow' >  
+                             <li class='trackListRow' oncontextmenu='showOptionsMenuCM(event,this)'>
+                                <input type='hidden' class='songIdCM' value='".$albumSong->getId()."'>
                                 <div class='trackCount'>
                                 <img onclick='manualPlaylist=false;setTrack(\"".$albumSong->getId()."\",tempPlaylist,true)' src='assests/Images/icons/play-white.png' class='play' alt=''>
                                 <span class='trackNumber'>$i</span>
                                 </div>
-                                <div class='trackInfo' onclick='manualPlaylist=false; setTrack(\"".$albumSong->getId()."\",tempPlaylist,true)'>
-                                <span class='trackName'>".$albumSong->getTitle()."</span><br>
+                                <div class='trackInfo' >
+                                <span class='trackName' onclick='manualPlaylist=false; setTrack(\"".$albumSong->getId()."\",tempPlaylist,true)'>".$albumSong->getTitle()."</span><br>
                                 <span class='artistName'>".$albumArtist->getName()."</span>
+                                <span class='artistAlbumNameSeperator'>•</span>
+                                <span role=\"link\" onclick=\"openPage('album.php?id=".$currentSongAlbum->getAlbumId()."')\"> <span class='albumName'> ".$currentSongAlbum->getTitle()."</span></span>
                                 </div>
                                 <div class='trackOptions'>
                                     <input type='hidden' class='songId' value='".$albumSong->getId()."'> 
