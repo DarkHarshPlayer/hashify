@@ -10,11 +10,11 @@ if (isset($_POST['title']) && isset($_POST['album'])&& isset($_POST['artist'])&&
     $path = $_POST['path'];
     $albumOrder = $_POST['albumOrder'];
     $plays = $_POST['plays'];
-
+    $lyrics = $_POST['lyrics'];
     if ($title == "" || $album == "" || $artist == "" || $genre == "" || $duration == "" || $path == "" || $albumOrder == ""){
         echo "GET LOST SQUIDWARD";
     }else{
-        $query = mysqli_query($con,"INSERT INTO songs VALUE ('','$title','$artist','$album','$genre','$duration','$path','$albumOrder','$plays')");
+        $query = mysqli_query($con,"INSERT INTO songs VALUE ('','$title','$artist','$album','$genre','$duration','$path','$albumOrder','$plays','$lyrics')");
        echo "Task executed successfully Song:$title Is successfully Added To DATABASE. Because I AM BATMAN . Lets eat Swarma ";
        // echo "\"INSERT INTO songs VALUE ('','$title','$artist','$album','$genre','$duration','$path','$albumOrder','$plays')\"";
       //   echo "<br>Song:$title , artist:$artist , album:$album , genre:$genre , duration:$duration || path:$path ";

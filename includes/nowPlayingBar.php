@@ -11,6 +11,7 @@
 
 
         if ($lastPlayedSong == 0){ // will be executed very first time when user signs up
+            
             $songQuery = mysqli_query($con,"SELECT id FROM songs ORDER BY RAND() LIMIT 90");
             $resultArray = array();
             while ($row = mysqli_fetch_array($songQuery)){
@@ -84,10 +85,25 @@
 
 
 
-    $(document).mouseup(function () {
-        mouseDown = false;
+        $(document).mouseup(function () {
+            mouseDown = false;
+        });
     });
-    });
+
+    function toggleLyrics() {
+        $('#lyricsPanel').scrollTop(0);
+        if (isLyricsOn){
+            isLyricsOn = false;
+            $('#lyricsPanel').hide(300);
+            $('#lyricButon').attr('src','assests/Images/icons/Lyrics - 2.png');
+        }else {
+            isLyricsOn = true;
+            $('#lyricsPanel').show(300);
+            $('#lyricButon').attr('src','assests/Images/icons/Lyrics - 2 - Active.png');
+
+
+        }
+    }
     function setRepeat(){
         repeat = !repeat;
         var imageName = repeat ? "repeat-active.png" : "repeat.png";
@@ -191,8 +207,20 @@
             var track = JSON.parse(data);
 
             $('.trackName span').text(track.title);
+            $('#songLyricTitle').text(track.title);
+
+            let lyricPath = track.path;
+            lyricPath = lyricPath.replace('.mp3','.txt');
+            lyricPath = lyricPath.replace('.flac','.txt');
+            lyricPath = lyricPath.replace('.ogg','.txt');
+            lyricPath = lyricPath.replace('.m4a','.txt');
+            lyricPath = lyricPath.split(' ').join('%20');
+            $('#lyricsPanel').scrollTop(0);
+          // console.log(lyricPath);
+            $('#lyricContent').load("/hashify"+lyricPath);
             $.post("includes/handlers/ajax/getArtistJson.php", {artistId: track.artist} ,function (dataA) {
                 var artist = JSON.parse(dataA);
+                $('#songLyricArtist').text('-'+artist.name);
                 $('.trackInfo .artistName span').text(artist.name);
                 $('.trackInfo .artistName span').attr('onclick',"openPage('artist.php?id="+track.artist+"')");
 
@@ -209,6 +237,8 @@
                 playSong();
             }
         });
+
+
 
 
     }
@@ -233,8 +263,8 @@
     }
 
 </script>
-<div id="nowPlayingBarContainer" onfocus="playingBarFocus()" onblur="playingBarFocusOut()">
-    <div id="nowPlayingBar" onfocus="playingBarFocus()" onblur="playingBarFocusOut()">
+<div id="nowPlayingBarContainer" >
+    <div id="nowPlayingBar">
         <div id="nowPlayingLeft">
             <div class="content">
                         <span class="albumLink">
@@ -288,7 +318,7 @@
                     <div class="progressBar">
 
                         <div class="progressBarBg">
-                            <div class="progress"></div>
+                            <div class="progress" draggable="true"></div>
                         </div>
 
                     </div>
@@ -302,6 +332,28 @@
         </div>
 
         <div id="nowPlayingRight">
+
+
+
+            <div class="lyricsBox">
+                <div class="lyricsPanel" id="lyricsPanel">
+                    <h5 style="display: inline-block">Lyrics</h5>
+                    <span style="float: right; " onclick="toggleLyrics();">&times;</span>
+                    <hr>
+                    <h1 id="songLyricTitle"></h1>
+                    <em id="songLyricArtist"></em>
+                    <p id="lyricBody">
+                    <pre style="font-size: 12px; color: #787878;" id="lyricContent">
+
+                    </pre>
+                    </p>
+
+                </div>
+
+                <button class="controlButton " title="Lyrics" role="link" onclick="toggleLyrics()">
+                    <img class="lyrics" style="width: 25px; height: 25px;" src="assests/Images/icons/Lyrics - 2.png" id="lyricButon" alt="Lyrics">
+                </button>
+            </div>
             <div class="volumeBar">
                 <button class="controlButton volume" title="Volume" onclick="setMute()">
                     <img src="assests/Images/icons/volume.png" alt="Volume">

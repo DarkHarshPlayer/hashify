@@ -17,7 +17,7 @@ include('includes/includedFiles.php');
         $playlistQuery = mysqli_query($con,"SELECT * FROM playlist WHERE owner='$userName'");
 
         if (mysqli_num_rows($playlistQuery) < 1){
-            echo "Click New playlist to create playlist";
+            echo "<center>Click New playlist to create playlist</center>";
         }
 
         while ($row = mysqli_fetch_array($playlistQuery)){
@@ -25,7 +25,7 @@ include('includes/includedFiles.php');
             $playlist = new Playlist($con,$row);
             echo "<div class='gridViewItemArtistPage' role='link' onclick='openPage(\"playlist.php?id=".$playlist->getId()."\")'>
                         <div class='playlistImage'>
-                        <img src='assests/Images/icons/playlist.png' title='".$row['name']."'>
+                        <img src='assests/Images/icons/playlist.png'>
                         </div>
                       <div class='gridViewInfo'>
                           ".$playlist->getName()."

@@ -8,9 +8,9 @@ include('includes/includedFiles.php');
 <h1 style="text-align: center; font-size: 60px;">Popular Right Now</h1>
 <!--<h1 style="text-align: center; font-size: 60px;">Made For --><?php //echo $userLoggedIn->getFirstName();?><!--</h1>-->
 <div class="toggleContainer">
-    <h2 class="popularStringArtist toggleItem"> <span id="togAlbum" onclick="toggleAlbum()">Albums </span></h2>
-    <h2 class="popularStringArtist toggleItem"> <span id="togSong" onclick="toggleSong()">Songs </span></h2>
-    <h2 class="popularStringArtist toggleItem"> <span id="togArtist" onclick="toggleArtist()">Artist </span></h2>
+    <h2 class="popularStringArtist toggleItem"> <span id="togAlbum" onclick="openPage('index.php?section=album')">Albums </span></h2>
+    <h2 class="popularStringArtist toggleItem"> <span id="togSong" onclick="openPage('index.php?section=songs')">Songs </span></h2>
+    <h2 class="popularStringArtist toggleItem"> <span id="togArtist" onclick="openPage('index.php?section=artist')">Artist </span></h2>
 </div>
 
 <div class="gridViewContainerArtistPage" id="albumSection">
@@ -25,7 +25,7 @@ include('includes/includedFiles.php');
     while ($row = mysqli_fetch_array($albumQuery)){
         echo "<div class='gridViewItemArtistPage'>
                     <span onclick='openPage(\"album.php?id=".$row['id']."\")'>
-                <img src='/hashify".$row['artworkPath']."' alt=' ".$row['title']."'>
+                       <div class='albumGridItem' style='background-image: url(\"/hashify".$row['artworkPath']."\") , url(\"/hashify/assests/Images/album.png\")'></div>
                         <div class='gridViewInfo'>
                          ".$row['title']."
                     </div>
@@ -39,7 +39,7 @@ include('includes/includedFiles.php');
 
     <ul class="trackList">
         <?php
-        $songQuery = mysqli_query($con, "SELECT id FROM songs ORDER BY plays DESC LIMIT 100  ");
+        $songQuery = mysqli_query($con, "SELECT id FROM songs ORDER BY RAND() LIMIT 100  ");
         if (mysqli_num_rows($songQuery) == 0){
             echo "<span class='noResult'>No Songs Matches ".$term."</span>";
         }
@@ -123,7 +123,27 @@ include('includes/includedFiles.php');
 
 
 <script>
-    toggleAlbum();
+//    toggleAlbum();
+
+    <?php
+    if(isset($_GET['section'])){
+        if ($_GET['section'] == 'album') {
+            echo "toggleAlbum()";
+        }
+        elseif($_GET['section'] == 'artist') {
+            echo "toggleArtist()";
+        }
+        elseif($_GET['section'] == 'songs') {
+            echo "toggleSong()";
+        }else{
+            echo "toggleAlbum()";
+        }
+    }else{
+        echo "toggleAlbum()";
+    }
+
+
+    ?>
 
 
     function toggleSong() {

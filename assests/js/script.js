@@ -11,7 +11,11 @@ var timer;
 var target;
 var menu = $('.optionMenu');
 let manualPlaylist = false;
-
+let isLyricsOn = false;
+let loadingBar ;
+let currentLoad;
+let isTweak1 = false;
+let tweak1ClickCount = 0;
 
 $(document).click(function (click) {
          target = $(click.target);
@@ -25,7 +29,43 @@ $(document).ready(function () {
     $('#mainViewContainer').scroll(function () {
         hideOptionsMenu();
     });
+    bgColor();
 });
+
+function tweak1Count() {
+    tweak1ClickCount++;
+    if (tweak1ClickCount === 7){
+        tweak1ClickCount = 0;
+        tweak1();
+    }
+}
+function tweak1() {
+    if (isTweak1){
+        $('#nowPlayingBarContainer').css({'bottom':'0','height':'90px','top':''});
+        $('#lyricsPanel').css({'transform':'translate(-10%,-105%)'});
+        $('#topContainer').css('position','fixed');
+        $('#topContainer').css('top','0');
+        $('#navBarContainer').css('top','0');
+        console.log('cheat deactivated');
+
+    }else {
+        $('#nowPlayingBarContainer').css({'top':'0','height':'90px','bottom':''});
+        $('#topContainer').css({'position':'fixed','top':'90px'});
+        $('#navBarContainer').css('top','90px');
+        $('#lyricsPanel').css({'transform':'translate(-10%,30%)'});
+        console.log('cheat activated');
+    }
+    isTweak1 = !isTweak1;
+}
+
+function bgColor(){
+    let r = Math.floor(Math.random()*(115 - 43 + 1) + 43);
+    let g = Math.floor(Math.random()*(115 - 43 + 1) + 43);
+    let b = Math.floor(Math.random()*(115 - 43 + 1) + 43);
+    let rgba = 'rgba('+r+','+g+','+b+',1)';
+
+    $('#topContainer').css('background','-webkit-linear-gradient(top, '+rgba+',#000)');
+}
 
 $(document).on('change','select.playlist',function () {
     var select = $(this);
@@ -56,19 +96,73 @@ function removefromPlaylist(button, playlistId) {
             openPage('playlist.php?id='+playlistId);
     });
 }
+$(window).on('popstate',function(event) {
+   // console.log("location: " + document.location.href);
+    openPageExec(document.location.href);
+});
 function  openPage(url) {
+    history.pushState(null,null,url);
+    openPageExec(url);
+}
+
+function openPageExec(url){
+     $('#loadingCover').show();
+    loadingBar = document.getElementById('loadingBar');
+    startLoadingBar();
     if (timer!=null){
         clearTimeout(timer);
     }
-    if (url.indexOf('?') == -1){
-        url = url+"?";
+    if (url.indexOf('?') == -1) {
+        url = url + "?";
     }
     var encodedUrl = encodeURI(url + "&userLoggedIn="+userLoggedIn);
-    $("#mainContent").load(encodedUrl);
-    history.pushState(null,null,url);
-    $("#mainViewContainer").scrollTop(0);
+   $("#mainContent").load(encodedUrl , function () {
+         $('#loadingCover').hide();
+
+        completeLoadingBar();
+       $("#mainViewContainer").scrollTop(0);
+
+   });
+}
+let s;
+let xs;
+function startLoadingBar() {
+    loadingBar.style.width = 0;
+    loadingBar.style.display = 'block';
+    xs = setInterval(inc1to80,2);
+    currentLoad = parseInt(loadingBar.style.width);
 }
 
+function inc1to80() {
+    currentLoad += 0.2;
+    if(currentLoad >= 80){
+        // console.log(currentLoad);
+        clearInterval(xs);
+      //  console.log('its 80');
+    }
+  //  console.log(loadingBar.style.width);
+    loadingBar.style.width = currentLoad+'%';
+
+}
+function completeLoadingBar() {
+     s = setInterval(inc1to100,1);
+     currentLoad = parseInt(loadingBar.style.width);
+}
+
+function inc1to100() {
+
+     currentLoad += 0.5;
+
+    if(currentLoad >= 103){
+   //     console.log(currentLoad);
+        clearInterval(s);
+    //    console.log('its done');
+       loadingBar.style.display = 'none';
+    }
+   // console.log(loadingBar.style.width);
+    loadingBar.style.width = currentLoad+'%';
+
+}
 function addSongsToDataBase(songtitle,songartist,songalbum,songgenre,songduration,songpath,songalbumOrder) {
     let plays = 0;
     let title = $("."+songtitle).val();
@@ -78,8 +172,15 @@ function addSongsToDataBase(songtitle,songartist,songalbum,songgenre,songduratio
     let duration = $("."+songduration).val();
     let path = $("."+songpath).val();
     let albumOrder = $("."+songalbumOrder).val();
+    let lyricPath = path;
+    lyricPath = lyricPath.replace('.mp3','.txt');
+    lyricPath = lyricPath.replace('.flac','.txt');
+    lyricPath = lyricPath.replace('.ogg','.txt');
+    lyricPath = lyricPath.replace('.m4a','.txt');
+    lyricPath = lyricPath.split(' ').join('%20');
+    lyricPath = "/hashify"+lyricPath;
 
-    $.post("includes/handlers/ajax/insertSongIntoDatabase.php",{title: title, album: album, artist: artist  , genre: genre, duration: duration, path: path, albumOrder: albumOrder,plays: plays})
+    $.post("includes/handlers/ajax/insertSongIntoDatabase.php",{title: title, album: album, artist: artist  , genre: genre, duration: duration, path: path, albumOrder: albumOrder,plays: plays,lyrics: lyricPath})
         .done(function (response) {
             $(".errorInsertingSong").text(response);
         });

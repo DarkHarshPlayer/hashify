@@ -38,7 +38,7 @@ class Songs{
           public function getAlbum(){
              return new Album($this->con,$this->albumId);
          }
-         public function getPath(){
+          public function getPath(){
             return $this->path;
         }
          public function getGenre(){

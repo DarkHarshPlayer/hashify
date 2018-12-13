@@ -2,7 +2,6 @@
     class Account{
         private $con;
         private $errorArray;
-
         public function __construct($con){
             $this->con = $con;
             $this->errorArray = Array();
@@ -44,8 +43,12 @@
             $profilePic = "assests/Images/Profile/default.jpg";
             $date = date("Y-m-d");
 
-            $result = mysqli_query($this->con,"INSERT INTO users VALUE ('','$un', '$fn', '$ln','$em', '$encryptedPw','$date', '$profilePic')");
-            return $result;
+            $result = mysqli_query($this->con,"INSERT INTO users VALUE ('','$un', '$fn', '$ln','$em', '$encryptedPw','$date', '$profilePic','0','')");
+            
+             echo "INSERT INTO users VALUE ('','$un', '$fn', '$ln','$em', '$encryptedPw','$date', '$profilePic','0','')"; // usefull for debugging
+
+         return $result;
+
         }
         private function validateUsername($un){
             if (strlen($un) > 25 || strlen($un) < 5){
